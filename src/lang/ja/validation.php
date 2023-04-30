@@ -157,7 +157,8 @@ return [
         'name' => '名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
-        'quantity' => '数量',
+        'title' => 'タイトル',
+        'content' => '本文',
     ],
 
 ];
