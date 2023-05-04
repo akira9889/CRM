@@ -13,7 +13,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+            <nav class="border-b border-gray-400 bg-blue-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -32,18 +32,21 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink :href="route('items.index')" :active="route().current('items.index')">
+                                    商品管理
+                                </NavLink>
                             </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
+                            <div class="ml-3 relative ">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {{ $page.props.auth.user.name }}
 
@@ -115,6 +118,9 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
+                            Dashboard
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -137,7 +143,7 @@ const showingNavigationDropdown = ref(false);
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
+            <header class="bg-blue-100 shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
