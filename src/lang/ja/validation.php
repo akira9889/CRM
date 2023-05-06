@@ -159,6 +159,15 @@ return [
         'password' => 'パスワード',
         'title' => 'タイトル',
         'content' => '本文',
+        'memo'=> 'メモ',
+        'price' => '料金',
+        'kana' => 'カナ',
+        'tel' => '電話番号',
+        'email' => 'メールアドレス',
+        'gender' => '性別',
+        'birthday' => '誕生日',
+        'postcode' => '郵便番号',
+        'address' => '住所',
     ],
 
 ];

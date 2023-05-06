@@ -65,7 +65,7 @@ const updateItem = id => {
                         </div>
                       </div>
                       <div class="p-2 w-full">
-                        <InputError :message="errors.price" />
+                        <InputError :message="errors.is_selling" />
                         <div class="relative">
                           <label class="leading-7 text-sm text-gray-600">ステータス</label>
                           <input type="radio" id="is_selling" name="is_selling" v-model="form.is_selling" value="1">
