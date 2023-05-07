@@ -32,11 +32,12 @@ const searchCustomers = () => {
               <div class="container px-5 py-8 mx-auto">
                 <FlashMessage />
                 <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
-                  <input type="text" v-model="search"
-                  class="rounded text-gray-900 w-60" placeholder="氏名（カナ）または電話番号">
+                  <input type="text" v-model="search" class="rounded text-gray-900 w-60" placeholder="氏名（カナ）または電話番号">
                   <button @click="searchCustomers"
-                  class="ml-6 text-white bg-indigo-500 border-0 py-2 px-6  hover:bg-indigo-600 rounded">検索</button>
-                  <Link as="button" :href="route('customers.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 rounded">顧客登録</Link>
+                    class="ml-6 text-white bg-indigo-500 border-0 py-2 px-6  hover:bg-indigo-600 rounded">検索</button>
+                  <Link as="button" :href="route('customers.create')"
+                    class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 rounded">顧客登録
+                  </Link>
                 </div>
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                   <table class="table-auto w-full text-left whitespace-no-wrap">
@@ -54,7 +55,7 @@ const searchCustomers = () => {
                       </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="customer in customers.data" :key="customer.id">
+                      <tr v-for="customer in customers.data" :key="customer.id">
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.id }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.name }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.kana }}</td>
@@ -70,5 +71,5 @@ const searchCustomers = () => {
         </div>
       </div>
     </div>
-</AuthenticatedLayout>
+  </AuthenticatedLayout>
 </template>
