@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
 use Inertia\Inertia;
 use App\Models\Purchase;
 use App\Models\Item;
 use App\Models\Order;
+
 use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
@@ -17,10 +19,11 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::selectRaw('id, customer_name, sum(subTotal) total, status, created_at')
+        $orders = Order::selectRaw('id, customer_name, customer_kana, sum(subTotal) total, status, created_at')
         ->groupBy('id')
+        ->searchCustomers($request->search)
         ->orderBy('created_at', 'desc')
         ->paginate(50);
 

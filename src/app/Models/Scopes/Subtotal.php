@@ -24,6 +24,8 @@ class Subtotal implements Scope
                 'item_purchase.id as pivot_id',
                 DB::raw('items.price * item_purchase.quantity as subtotal'),
                 'customers.name as customer_name',
+                'customers.kana as customer_kana',
+                'customers.tel as customer_tel',
                 'items.name as item_name',
                 'items.price as item_price',
                 'item_purchase.quantity',

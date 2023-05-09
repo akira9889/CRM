@@ -14,4 +14,16 @@ class Order extends Model
     {
         static::addGlobalScope(new Subtotal);
     }
+
+    public function scopeSearchCustomers($query, $input = null)
+    {
+        if ($input) {
+            if (Order::where('customer_kana', 'like', $input . '%')
+                ->orWhere('customer_tel', 'like', $input . '%')->exists()
+            ) {
+                return $query->where('customer_kana', 'like', $input . '%')
+                    ->orWhere('customer_tel', 'like', $input . '%');
+            }
+        }
+    }
 }

@@ -1,13 +1,23 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue'
 import dayjs from 'dayjs'
 
 const props = defineProps({
   orders: Object
+})
+
+const search = ref('')
+
+const searchCustomers = () => {
+  router.get(route('purchases.index', { search: search.value }))
+}
+
+onMounted(() => {
+  console.log(props.orders.data);
 })
 </script>
 
@@ -51,7 +61,7 @@ const props = defineProps({
                     <tbody>
                       <tr v-for="order in orders.data" :key="order.id">
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.id }}</td>
-                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.customer_name }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ `${order.customer_name}(${order.customer_kana})` }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.total }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ order.status }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
