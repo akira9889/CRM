@@ -26,6 +26,7 @@ class Subtotal implements Scope
                 'customers.name as customer_name',
                 'customers.kana as customer_kana',
                 'customers.tel as customer_tel',
+                'items.id as item_id',
                 'items.name as item_name',
                 'items.price as item_price',
                 'item_purchase.quantity',

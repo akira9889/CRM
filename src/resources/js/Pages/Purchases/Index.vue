@@ -16,6 +16,10 @@ const searchCustomers = () => {
   router.get(route('purchases.index', { search: search.value }))
 }
 
+const showPurchase = id => {
+  router.get(route('purchases.show', { purchase: id }))
+}
+
 onMounted(() => {
   console.log(props.orders.data);
 })
@@ -42,7 +46,7 @@ onMounted(() => {
                     class="ml-6 text-white bg-indigo-500 border-0 py-2 px-6  hover:bg-indigo-600 rounded">検索</button>
                 </div>
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                  <table class="table-auto w-full text-left whitespace-no-wrap">
+                  <table class="table-auto w-full text-center whitespace-no-wrap">
                     <thead>
                       <tr>
                         <th
@@ -59,9 +63,9 @@ onMounted(() => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="order in orders.data" :key="order.id">
+                      <tr v-for="order in orders.data" :key="order.id" class="hover:bg-blue-100 cursor-pointer" @click="showPurchase(order.id)">
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.id }}</td>
-                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ `${order.customer_name}(${order.customer_kana})` }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.customer_name }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.total }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ order.status }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{ dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
