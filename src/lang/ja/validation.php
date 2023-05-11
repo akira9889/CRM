@@ -159,7 +159,7 @@ return [
         'password' => 'パスワード',
         'title' => 'タイトル',
         'content' => '本文',
-        'memo'=> 'メモ',
+        'memo' => 'メモ',
         'price' => '料金',
         'kana' => 'カナ',
         'tel' => '電話番号',

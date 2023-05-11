@@ -2,24 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
 use Inertia\Inertia;
 use App\Models\Purchase;
-use App\Models\Customer;
 use App\Models\Item;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
 {
+    const NOT_CANCELED = 1;
+    const CANCELED = 0;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $orders = Order::selectRaw('id, customer_name, customer_kana, sum(subTotal) total, status, created_at')
+        ->groupBy('id')
+        ->searchCustomers($request->search)
+        ->orderBy('created_at', 'desc')
+        ->paginate(50);
+
+        return Inertia::render('Purchases/Index', [
+            'orders' => $orders
+        ]);
     }
 
     /**
@@ -51,7 +62,7 @@ class PurchaseController extends Controller
         try {
             $purchase = Purchase::create([
                 'customer_id' => $request->customer_id,
-                'status' => 0
+                'status' => static::NOT_CANCELED
             ]);
 
             foreach ($request->items as $item) {
@@ -78,7 +89,19 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        //
+        $orders = Order::where('id', $purchase->id)->get();
+
+        $total = 0;
+        foreach($orders as $order) {
+            $total += $order->subtotal;
+        }
+
+        // dd($orders);
+
+        return Inertia::render('Purchases/Show', [
+            'orders' => $orders,
+            'total' => $total
+        ]);
     }
 
     /**
@@ -89,7 +112,20 @@ class PurchaseController extends Controller
      */
     public function edit(Purchase $purchase)
     {
-        //
+        $orders = Order::where('id', $purchase->id)->get();
+
+        if (!$orders[0]->status) {
+            abort(404);
+        }
+
+        $total = 0;
+        foreach ($orders as $order) {
+            $total += $order->subtotal;
+        }
+
+        return Inertia::render('Purchases/Edit', [
+            'orders' => $orders,
+        ]);
     }
 
     /**
@@ -101,7 +137,24 @@ class PurchaseController extends Controller
      */
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
-        //
+        $purchase->status = $request->status;
+        $purchase->save();
+
+        $items = [];
+        foreach($request->items as $item) {
+            $item_id = $item['id'];
+            $item_quantity[$item_id] = ['quantity' => $item['quantity']];
+            $items += $item_quantity;
+        }
+        $purchase->items()->sync($items);
+
+        return to_route('purchases.show', [
+            'purchase' => $purchase->id
+        ])
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success'
+        ]);
     }
 
     /**
