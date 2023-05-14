@@ -23,6 +23,7 @@ class Subtotal implements Scope
                 'purchases.id as id',
                 'item_purchase.id as pivot_id',
                 DB::raw('items.price * item_purchase.quantity as subtotal'),
+                'customers.id as customer_id',
                 'customers.name as customer_name',
                 'customers.kana as customer_kana',
                 'customers.tel as customer_tel',
@@ -51,7 +52,7 @@ class Subtotal implements Scope
         //         LEFT JOIN customers c
         //         ON p.customer_id = c.id";
 
-        // $sql = "SELECT history.id, history.name, sum(history.subTotal) total, history.status
+        // $sql = "SELECT history.id, history.name, sum(history.subTotal) total, history.status, history.created_at
         //         FROM (
         //                 SELECT c.name, p.id, i.price, pivot.quantity, (i.price * pivot.quantity) subTotal, p.status, p.created_at
         //                 FROM purchases p
@@ -63,7 +64,7 @@ class Subtotal implements Scope
         //                 ON p.customer_id = c.id
         //             ) history
         //         GROUP BY history.id
-        //      ";
+        // //      ";
 
     }
 }

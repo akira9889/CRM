@@ -169,6 +169,8 @@ return [
         'postcode' => '郵便番号',
         'address' => '住所',
         'customer_id' => '顧客',
+        'startDate' => '開始日',
+        'endDate' => '終了日'
     ],
 
 ];
