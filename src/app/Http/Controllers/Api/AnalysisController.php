@@ -3,37 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiAnalysisRequest;
 use App\Models\Order;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
+use App\Services\AnalysisService;
+use App\Services\DecileService;
 
 class AnalysisController extends Controller
 {
-    public function index(Request $request)
+    public function index(ApiAnalysisRequest $request)
     {
-        $subQuery = Order::betweenDate($request->startDate, $request->endDate);
+            $subQuery = Order::betweenDate($request->startDate, $request->endDate);
 
-        if($request->type === 'perDay') {
-            $subQuery->where('status', true)
-            ->groupBy('id')
-            ->selectRaw('id, sum(subtotal) totalPerPurchase, DATE_FORMAT(created_at, "%Y-%m-%d") as date');
-        }
+            if($request->type === 'perDay') {
+                list($data, $labels, $totals) = AnalysisService::perDay($subQuery);
+            }
 
-        $data = DB::table($subQuery)
-        ->groupBy('date')
-        ->selectRaw('date, sum(totalPerPurchase) total')
-        ->orderBy('date')
-        ->get();
+            if($request->type === 'perMonth') {
+                list($data, $labels, $totals) = AnalysisService::perMonth($subQuery);
+            }
 
-        $labels = $data->pluck('date');
-        $totals = $data->pluck('total');
+            if($request->type === 'perYear') {
+                list($data, $labels, $totals) = AnalysisService::perYear($subQuery);
+            }
 
-        return response()->json([
-            'data' => $data,
-            'type' => $request->type,
-            'labels' => $labels,
-            'totals' => $totals,
-        ], Response::HTTP_OK);
+            if($request->type === 'decile') {
+                list($data, $labels, $totals) = DecileService::decile($subQuery);
+            }
+
+            return response()->json([
+                'data' => $data,
+                'type' => $request->type,
+                'labels' => $labels,
+                'totals' => $totals,
+            ], Response::HTTP_OK);
     }
 }
